@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATELIER | Tunisian Apparel & Heritage Essentials</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap');
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        }
+
+        ::selection {
+            background-color: #1A1A1A;
+            color: #FFFFFF;
+        }
+
+        a, button, input, select {
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FCFCFC;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E5E5E5;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1A1A1A;
+        }
+
+        /* Seamless Infinite Moving Announcement (Pub Moving) */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 25s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes subtle-zoom {
+            0% { transform: scale(1.02) translateY(0); }
+            50% { transform: scale(1.08) translateY(-1%); }
+            100% { transform: scale(1.02) translateY(0); }
+        }
+        .animate-subtle-zoom {
+            animation: subtle-zoom 25s ease-in-out infinite;
+        }
+
+        .product-image {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .group:hover .product-image {
+            transform: scale(1.035);
+        }
+
+        .quick-add-btn {
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-[#FCFCFC] text-[#1A1A1A] antialiased overflow-x-hidden">
+
+    <!-- Infinite Moving Announcement Bar -->
+    <div class="bg-black text-white text-xs tracking-widest uppercase py-3 overflow-hidden select-none border-b border-white/10">
+        <div class="animate-marquee whitespace-nowrap flex items-center">
+            <span class="mx-8 font-medium">Complimentary shipping across Tunisia on orders over 150 TND • Code: CARTHAGE</span>
+            <span class="mx-8 font-medium">New Heritage Collection Now Live</span>
+            <span class="mx-8 font-medium">Handcrafted Luxury Essentials Boutique</span>
+            <span class="mx-8 font-medium">Complimentary shipping across Tunisia on orders over 150 TND • Code: CARTHAGE</span>
+            <span class="mx-8 font-medium">Complimentary shipping across Tunisia on orders over 150 TND • Code: CARTHAGE</span>
+            <span class="mx-8 font-medium">New Heritage Collection Now Live</span>
+            <span class="mx-8 font-medium">Handcrafted Luxury Essentials Boutique</span>
+            <span class="mx-8 font-medium">Complimentary shipping across Tunisia on orders over 150 TND • Code: CARTHAGE</span>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Mobile Menu Toggle -->
+            <button class="lg:hidden p-2 text-gray-600 hover:text-black">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Navigation Links -->
+            <nav class="hidden lg:flex space-x-8 text-sm font-medium tracking-wide uppercase">
+                <a href="#" class="text-black border-b border-black pb-1">New Collection</a>
+                <a href="#" class="text-gray-500 hover:text-black transition-colors pb-1">Women</a>
+                <a href="#" class="text-gray-500 hover:text-black transition-colors pb-1">Men</a>
+                <a href="#" class="text-gray-500 hover:text-black transition-colors pb-1">Maison</a>
+            </nav>
+
+            <!-- Brand Logo -->
+            <a href="#" class="text-2xl font-bold tracking-[0.2em] uppercase text-center absolute left-1/2 transform -translate-x-1/2 lg:static lg:transform-none">
+                ATELIER
+            </a>
+
+            <!-- Utility Icons -->
+            <div class="flex items-center space-x-5 text-gray-700">
+                <a href="#" class="hover:text-black transition-colors p-1 hidden sm:block">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                </a>
+                
+                <!-- Connection Gateway Button Trigger -->
+                <button onclick="openAuthGateway()" class="hover:text-black transition-colors p-1 flex items-center gap-1.5 focus:outline-none">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                    <span class="hidden md:inline text-xs font-semibold uppercase tracking-widest pt-0.5">Connexion</span>
+                </button>
+
+                <!-- Shopping Bag Trigger -->
+                <button onclick="toggleCartDrawer(true)" class="hover:text-black transition-colors p-1 relative focus:outline-none">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span id="cartCountBadge" class="absolute -top-1 -right-1 bg-black text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">2</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Professional Auth Gateway Screen Overlay -->
+    <div id="authGateway" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-md transition-all duration-300">
+        <div class="bg-white max-w-md w-full p-8 md:p-10 relative border border-gray-100 shadow-2xl">
+            <button onclick="closeAuthGateway()" class="absolute top-5 right-5 text-gray-400 hover:text-black transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <!-- VIEW: CONNEXION -->
+            <div id="loginView" class="block">
+                <div class="text-center mb-8">
+                    <span class="text-[10px] tracking-[0.3em] text-gray-400 uppercase block mb-2">Espace Membre</span>
+                    <h3 class="text-2xl tracking-wide uppercase font-light text-gray-900">Connexion</h3>
+                </div>
+                <form onsubmit="handleAuthSubmit(event, 'login')" class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1.5 font-semibold">Adresse Email</label>
+                        <input type="email" required placeholder="exemple@domaine.tn" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 focus:outline-none focus:border-black rounded-none placeholder-gray-300">
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 font-semibold">Mot de passe</label>
+                            <a href="#" class="text-[10px] uppercase text-gray-400 tracking-wider hover:text-black underline">Oublié ?</a>
+                        </div>
+                        <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 focus:outline-none focus:border-black rounded-none placeholder-gray-300">
+                    </div>
+                    <button type="submit" class="w-full bg-black text-white py-4 text-xs font-semibold tracking-widest uppercase hover:bg-gray-900 transition-colors mt-4">Se Connecter</button>
+                </form>
+                <div class="text-center mt-8 pt-6 border-t border-gray-100">
+                    <p class="text-xs text-gray-500 mb-2">Nouveau chez Atelier ?</p>
+                    <button onclick="switchAuthView('register')" class="text-xs uppercase font-bold tracking-widest text-black hover:text-gray-600 underline focus:outline-none">Créer un compte</button>
+                </div>
+            </div>
+
+            <!-- VIEW: INSCRIPTION -->
+            <div id="registerView" class="hidden">
+                <div class="text-center mb-8">
+                    <span class="text-[10px] tracking-[0.3em] text-gray-400 uppercase block mb-2">Rejoindre L'Atelier</span>
+                    <h3 class="text-2xl tracking-wide uppercase font-light text-gray-900">Inscription</h3>
+                </div>
+                <form onsubmit="handleAuthSubmit(event, 'register')" class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1.5 font-semibold">Nom Complet</label>
+                        <input type="text" required placeholder="Votre Nom & Prénom" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 focus:outline-none focus:border-black rounded-none placeholder-gray-300">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1.5 font-semibold">Adresse Email</label>
+                        <input type="email" required placeholder="exemple@domaine.tn" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 focus:outline-none focus:border-black rounded-none placeholder-gray-300">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1.5 font-semibold">Mot de passe</label>
+                        <input type="password" required placeholder="Minimum 8 caractères" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 focus:outline-none focus:border-black rounded-none placeholder-gray-300">
+                    </div>
+                    <div class="flex items-center space-x-2 pt-2">
+                        <input type="checkbox" id="terms" required class="accent-black h-3.5 w-3.5 rounded-none">
+                        <label for="terms" class="text-[11px] text-gray-500 tracking-wide select-none">J'accepte la politique de confidentialité</label>
+                    </div>
+                    <button type="submit" class="w-full bg-black text-white py-4 text-xs font-semibold tracking-widest uppercase hover:bg-gray-900 transition-colors mt-4">Créer Mon Compte</button>
+                </form>
+                <div class="text-center mt-8 pt-6 border-t border-gray-100">
+                    <p class="text-xs text-gray-500 mb-2">Vous possédez déjà un compte ?</p>
+                    <button onclick="switchAuthView('login')" class="text-xs uppercase font-bold tracking-widest text-black hover:text-gray-600 underline focus:outline-none">Se connecter direct</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIDE-CART SLIDE-OUT DRAWER -->
+    <div id="cartDrawer" class="fixed inset-0 z-[110] hidden transition-all duration-300">
+        <!-- Backdrop -->
+        <div onclick="toggleCartDrawer(false)" class="absolute inset-0 bg-black/40 backdrop-blur-xs"></div>
+        <!-- Drawer Container -->
+        <div class="absolute right-0 top-0 bottom-0 max-w-md w-full bg-white shadow-2xl flex flex-col z-10 animate-slide-in">
+            <!-- Header -->
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <h3 class="text-sm font-semibold uppercase tracking-widest text-gray-900">Votre Panier</h3>
+                    <span id="cartPanelCount" class="text-xs bg-gray-100 px-2 py-0.5 font-bold rounded-full">2</span>
+                </div>
+                <button onclick="toggleCartDrawer(false)" class="text-gray-400 hover:text-black transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <!-- Scrollable Items Area -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-6" id="cartItemsContainer">
+                <!-- Item 1 -->
+                <div class="flex space-x-4 border-b border-gray-50 pb-6">
+                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=120" alt="Blazer" class="w-20 h-24 object-cover bg-gray-50">
+                    <div class="flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between text-xs uppercase tracking-wide font-medium">
+                                <h4 class="text-gray-900">Sidi Bou Wool Blazer</h4>
+                                <span class="font-semibold">245 TND</span>
+                            </div>
+                            <p class="text-[11px] text-gray-400 mt-1 uppercase">Oatmeal Melange / M</p>
+                        </div>
+                        <div class="flex items-center justify-between text-xs pt-2">
+                            <div class="flex items-center border border-gray-200">
+                                <button class="px-2 py-1 text-gray-400 hover:text-black">-</button>
+                                <span class="px-3 py-1 font-medium text-gray-900">1</span>
+                                <button class="px-2 py-1 text-gray-400 hover:text-black">+</button>
+                            </div>
+                            <button class="text-gray-400 hover:text-black underline text-[10px] uppercase tracking-wider">Retirer</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="flex space-x-4 border-b border-gray-50 pb-6">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=120" alt="Dress" class="w-20 h-24 object-cover bg-gray-50">
+                    <div class="flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between text-xs uppercase tracking-wide font-medium">
+                                <h4 class="text-gray-900">Djerba Ribbed Midi Dress</h4>
+                                <span class="font-semibold">185 TND</span>
+                            </div>
+                            <p class="text-[11px] text-gray-400 mt-1 uppercase">Desert Sand / S</p>
+                        </div>
+                        <div class="flex items-center justify-between text-xs pt-2">
+                            <div class="flex items-center border border-gray-200">
+                                <button class="px-2 py-1 text-gray-400 hover:text-black">-</button>
+                                <span class="px-3 py-1 font-medium text-gray-900">1</span>
+                                <button class="px-2 py-1 text-gray-400 hover:text-black">+</button>
+                            </div>
+                            <button class="text-gray-400 hover:text-black underline text-[10px] uppercase tracking-wider">Retirer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer Actions -->
+            <div class="p-6 border-t border-gray-100 bg-gray-50/50 space-y-4">
+                <div class="flex justify-between text-xs uppercase tracking-widest font-semibold text-gray-900">
+                    <span>Sous-total</span>
+                    <span>430 TND</span>
+                </div>
+                <p class="text-[10px] text-gray-400 uppercase tracking-normal">Livraison calculée à l'étape suivante. Taxes incluses.</p>
+                <button onclick="openCheckoutWizard()" class="w-full bg-black text-white py-4 text-xs font-semibold tracking-widest uppercase hover:bg-gray-900 transition-colors">
+                    Passer à la caisse
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PREMIUM INTEGRATED CHECKOUT WIZARD SCREEN OVERLAY -->
+    <div id="checkoutWizard" class="fixed inset-0 z-[120] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-md overflow-y-auto">
+        <div class="bg-white max-w-4xl w-full grid grid-cols-1 md:grid-cols-12 relative border border-gray-100 shadow-2xl my-8">
+            <!-- Close Button -->
+            <button onclick="closeCheckoutWizard()" class="absolute top-5 right-5 text-gray-400 hover:text-black z-10 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Column Left: Order Shipping Form Information (7 cols) -->
+            <div class="p-8 md:p-10 md:col-span-7 border-r border-gray-100">
+                <div class="mb-8">
+                    <span class="text-[9px] tracking-[0.3em] text-gray-400 uppercase block mb-1">ATELIER ATELIER</span>
+                    <h3 class="text-xl tracking-wide uppercase font-light text-gray-900">Informations de livraison</h3>
+                </div>
+
+                <form onsubmit="handlePlaceOrder(event)" class="space-y-5">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1 font-semibold">Prénom</label>
+                            <input type="text" required class="w-full px-4 py-2.5 text-sm bg-white border border-gray-200 focus:outline-none focus:border-black rounded-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1 font-semibold">Nom</label>
+                            <input type="text" required class="w-full px-4 py-2.5 text-sm bg-white border border-gray-200 focus:outline-none focus:border-black rounded-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1 font-semibold">Adresse Électronique</label>
+                        <input type="email" required class="w-full px-4 py-2.5 text-sm bg-white border border-gray-200 focus:outline-none focus:border-black rounded-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1 font-semibold">Adresse de livraison</label>
+                        <input type="text" required placeholder="Rue, Appartement, Résidence..." class="w-full px-4 py-2.5 text-sm bg-white border border-gray-200 focus:outline-none focus:border-black rounded-none placeholder-gray-300">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1 font-semibold">Gouvernorat</label>
+                            <select class="w-full px-4 py-2.5 text-sm bg-white border border-gray-200 focus:outline-none focus:border-black rounded-none">
+                                <option>Tunis</option>
+                                <option>Ariana</option>
+                                <option>Sousse</option>
+                                <option>Sfax</option>
+                                <option>Monastir</option>
+                                <option>Bizerte</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1 font-semibold">Téléphone Portable</label>
+                            <input type="tel" required placeholder="+216 22 123 456" class="w-full px-4 py-2.5 text-sm bg-white border border-gray-200 focus:outline-none focus:border-black rounded-none placeholder-gray-300">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-100">
+                        <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-3 font-semibold">Mode de paiement</label>
+                        <div class="space-y-2.5">
+                            <label class="flex items-center justify-between p-3 border border-black bg-gray-50 cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <input type="radio" name="payment" checked class="accent-black">
+                                    <span class="text-xs font-medium uppercase tracking-wider text-gray-900">Paiement à la livraison (Cash)</span>
+                                </div>
+                                <i data-lucide="truck" class="w-4 h-4 text-gray-600"></i>
+                            </label>
+                            <label class="flex items-center justify-between p-3 border border-gray-200 hover:border-black cursor-pointer">
+                                <div class="flex items-center space-x-3">
+                                    <input type="radio" name="payment" class="accent-black">
+                                    <span class="text-xs font-medium uppercase tracking-wider text-gray-900">Carte Bancaire / E-Dinar</span>
+                                </div>
+                                <i data-lucide="credit-card" class="w-4 h-4 text-gray-400"></i>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-black text-white py-4 text-xs font-semibold tracking-widest uppercase hover:bg-gray-900 transition-colors mt-6">
+                        Confirmer la commande • 430 TND
+                    </button>
+                </form>
+            </div>
+
+            <!-- Column Right: Summary Breakdown (5 cols) -->
+            <div class="p-8 md:p-10 md:col-span-5 bg-gray-50/70 flex flex-col justify-between">
+                <div>
+                    <h4 class="text-xs uppercase tracking-widest font-semibold text-gray-900 mb-6">Résumé de l'ordre</h4>
+                    <!-- Compact list -->
+                    <div class="space-y-4 max-h-64 overflow-y-auto pr-2">
+                        <div class="flex items-center space-x-3 justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="relative w-12 h-14 bg-white border border-gray-100">
+                                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=60" alt="" class="w-full h-full object-cover">
+                                    <span class="absolute -top-1.5 -right-1.5 bg-gray-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
+                                </div>
+                                <span class="text-xs font-medium text-gray-900 line-clamp-1">Sidi Bou Blazer</span>
+                            </div>
+                            <span class="text-xs font-semibold text-gray-900">245 TND</span>
+                        </div>
+                        <div class="flex items-center space-x-3 justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="relative w-12 h-14 bg-white border border-gray-100">
+                                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=60" alt="" class="w-full h-full object-cover">
+                                    <span class="absolute -top-1.5 -right-1.5 bg-gray-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
+                                </div>
+                                <span class="text-xs font-medium text-gray-900 line-clamp-1">Djerba Midi Dress</span>
+                            </div>
+                            <span class="text-xs font-semibold text-gray-900">185 TND</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary pricing ledger -->
+                <div class="border-t border-gray-200 pt-6 mt-8 space-y-3.5 text-xs uppercase tracking-wider">
+                    <div class="flex justify-between text-gray-500">
+                        <span>Sous-total</span>
+                        <span>430 TND</span>
+                    </div>
+                    <div class="flex justify-between text-gray-500">
+                        <span>Livraison</span>
+                        <span class="text-green-600 font-medium">Gratuit</span>
+                    </div>
+                    <div class="flex justify-between text-gray-900 font-bold border-t border-gray-200 pt-3.5 text-sm tracking-widest">
+                        <span>Total</span>
+                        <span>430 TND</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative h-[calc(100vh-7.5rem)] bg-gray-100 overflow-hidden">
+            <div class="absolute inset-0">
+                <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop" 
+                     alt="Editorial Hero" 
+                     class="w-full h-full object-cover object-center transform scale-105 animate-subtle-zoom">
+                <div class="absolute inset-0 bg-black/20"></div>
+            </div>
+            
+            <div class="relative max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-start text-white">
+                <span class="text-xs tracking-[0.3em] uppercase font-semibold mb-3">Mediterranean / Heritage Design</span>
+                <h1 class="text-4xl sm:text-6xl font-light tracking-tight max-w-xl leading-tight mb-6">
+                    The Art of <br><span class="font-semibold">Tunisian Minimalism</span>
+                </h1>
+                <p class="text-sm sm:text-base max-w-md text-gray-200 font-light mb-8 leading-relaxed">
+                    Discover our curation of locally sourced premium linens and traditional structural silhouettes designed to bridge heritage and modern luxury.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="bg-white text-black px-8 py-3.5 text-xs font-semibold tracking-widest uppercase hover:bg-black hover:text-white transition-all duration-300 shadow-sm">
+                        Shop Collection
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brand Values -->
+        <section class="border-b border-gray-100 py-12 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="flex flex-col items-center p-4">
+                    <i data-lucide="leaf" class="w-6 h-6 text-gray-400 mb-3"></i>
+                    <h3 class="text-xs uppercase tracking-wider font-semibold mb-1">Locally Crafted</h3>
+                    <p class="text-xs text-gray-500 max-w-xs">Supporting independent Tunisian artisans and ethical regional workshops.</p>
+                </div>
+                <div class="flex flex-col items-center p-4">
+                    <i data-lucide="package" class="w-6 h-6 text-gray-400 mb-3"></i>
+                    <h3 class="text-xs uppercase tracking-wider font-semibold mb-1">Conscious Packaging</h3>
+                    <p class="text-xs text-gray-500 max-w-xs">Zero-plastic, biodegradable materials shipped directly from Tunis.</p>
+                </div>
+                <div class="flex flex-col items-center p-4">
+                    <i data-lucide="refresh-cw" class="w-6 h-6 text-gray-400 mb-3"></i>
+                    <h3 class="text-xs uppercase tracking-wider font-semibold mb-1">Circular Craft</h3>
+                    <p class="text-xs text-gray-500 max-w-xs">Bring back pre-loved Atelier garments to help recycle local textiles for boutique credits.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Grid Section -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Category 1 -->
+                <div class="group relative h-[500px] overflow-hidden cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=1000&auto=format&fit=crop" alt="Womenswear" class="w-full h-full object-cover product-image">
+                    <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+                    <div class="absolute bottom-8 left-8 text-white">
+                        <h2 class="text-2xl font-light tracking-wide uppercase mb-2">The Horizon Edit</h2>
+                        <span class="text-xs tracking-widest uppercase border-b border-white pb-1 group-hover:pr-4 transition-all">Explore Now</span>
+                    </div>
+                </div>
+                <!-- Category 2 -->
+                <div class="group relative h-[500px] overflow-hidden cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=1000&auto=format&fit=crop" alt="Menswear" class="w-full h-full object-cover product-image">
+                    <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+                    <div class="absolute bottom-8 left-8 text-white">
+                        <h2 class="text-2xl font-light tracking-wide uppercase mb-2">Modern Heritage</h2>
+                        <span class="text-xs tracking-widest uppercase border-b border-white pb-1 group-hover:pr-4 transition-all">Explore Now</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Arrivals / Product Grid -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+            <div class="flex items-end justify-between mb-10">
+                <div>
+                    <span class="text-xs tracking-[0.2em] text-gray-400 uppercase block mb-1">Curated Selection</span>
+                    <h2 class="text-2xl tracking-wide uppercase font-light">Trending Pieces</h2>
+                </div>
+                <a href="#" class="text-xs uppercase tracking-widest font-semibold border-b border-black pb-1 hover:text-gray-500 hover:border-gray-500 transition-colors">
+                    View All
+                </a>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
+                <!-- Product 1 -->
+                <div class="group relative flex flex-col">
+                    <div class="relative aspect-[3/4] bg-gray-100 overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1000&auto=format&fit=crop" alt="Product" class="w-full h-full object-cover object-center product-image">
+                        <span class="absolute top-3 left-3 bg-white text-black text-[10px] tracking-widest uppercase font-semibold px-2 py-1">New</span>
+                        <button class="quick-add-btn absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm text-black py-3 text-xs tracking-widest uppercase font-semibold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 hover:bg-black hover:text-white">
+                            + Quick Add
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-start text-sm">
+                        <div>
+                            <h3 class="font-medium text-gray-900"><a href="#">Sidi Bou Wool Blazer</a></h3>
+                            <p class="text-xs text-gray-500 mt-1">Oatmeal Melange</p>
+                        </div>
+                        <p class="font-medium text-gray-900">245 TND</p>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="group relative flex flex-col">
+                    <div class="relative aspect-[3/4] bg-gray-100 overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop" alt="Product" class="w-full h-full object-cover object-center product-image">
+                        <button class="quick-add-btn absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm text-black py-3 text-xs tracking-widest uppercase font-semibold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 hover:bg-black hover:text-white">
+                            + Quick Add
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-start text-sm">
+                        <div>
+                            <h3 class="font-medium text-gray-900"><a href="#">Djerba Ribbed Midi Dress</a></h3>
+                            <p class="text-xs text-gray-500 mt-1">Desert Sand</p>
+                        </div>
+                        <p class="font-medium text-gray-900">185 TND</p>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="group relative flex flex-col">
+                    <div class="relative aspect-[3/4] bg-gray-100 overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=1000&auto=format&fit=crop" alt="Product" class="w-full h-full object-cover object-center product-image">
+                        <button class="quick-add-btn absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm text-black py-3 text-xs tracking-widest uppercase font-semibold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 hover:bg-black hover:text-white">
+                            + Quick Add
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-start text-sm">
+                        <div>
+                            <h3 class="font-medium text-gray-900"><a href="#">Carthage Poplin Shirt</a></h3>
+                            <p class="text-xs text-gray-500 mt-1">Optic White</p>
+                        </div>
+                        <p class="font-medium text-gray-900">95 TND</p>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="group relative flex flex-col">
+                    <div class="relative aspect-[3/4] bg-gray-100 overflow-hidden mb-4">
+                        <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1000&auto=format&fit=crop" alt="Product" class="w-full h-full object-cover object-center product-image">
+                        <span class="absolute top-3 left-3 bg-red-600 text-white text-[10px] tracking-widest uppercase font-semibold px-2 py-1">Sale</span>
+                        <button class="quick-add-btn absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm text-black py-3 text-xs tracking-widest uppercase font-semibold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 hover:bg-black hover:text-white">
+                            + Quick Add
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-start text-sm">
+                        <div>
+                            <h3 class="font-medium text-gray-900"><a href="#">Matmata Linen Trouser</a></h3>
+                            <p class="text-xs text-gray-500 mt-1">Charcoal</p>
+                        </div>
+                        <p class="font-medium text-gray-900"><span class="text-gray-400 line-through mr-1.5">160 TND</span>120 TND</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Subscription -->
+        <section class="bg-gray-50 border-t border-b border-gray-100 py-24 text-center">
+            <div class="max-w-2xl mx-auto px-4">
+                <span class="text-xs tracking-[0.3em] text-gray-400 uppercase block mb-3">Join the Club</span>
+                <h2 class="text-3xl font-light tracking-wide uppercase mb-4">Atelier Journal</h2>
+                <p class="text-gray-500 font-light text-sm mb-8 max-w-md mx-auto leading-relaxed">
+                    Subscribe to receive early access to seasonal lookbooks, exclusive editorial collection drops, and 10% off your first luxury order.
+                </p>
+                <form class="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+                    <input type="email" placeholder="Your email address" required 
+                           class="w-full px-4 py-3.5 text-sm bg-white border border-gray-200 focus:outline-none focus:border-black rounded-none placeholder-gray-400">
+                    <button type="submit" class="w-full sm:w-auto bg-black text-white px-8 py-3.5 text-xs font-semibold tracking-widest uppercase hover:bg-gray-900 transition-colors whitespace-nowrap">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white pt-20 pb-12 border-t border-gray-100 text-xs tracking-wider uppercase text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+            <div>
+                <h4 class="text-black font-semibold mb-5 tracking-widest">Shop</h4>
+                <ul class="space-y-3.5">
+                    <li><a href="#" class="hover:text-black transition-colors">New Arrivals</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors">Best Sellers</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors">The Heritage Linen</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors">Archive Sale</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-black font-semibold mb-5 tracking-widest">Assistance</h4>
+                <ul class="space-y-3.5">
+                    <li><a href="#" class="hover:text-black transition-colors">Shipping & Returns</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors">Size Guide</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors">FAQs</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-black font-semibold mb-5 tracking-widest">About</h4>
+                <ul class="space-y-3.5">
+                    <li><a href="#" class="hover:text-black transition-colors">Our Story</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors">Sustainability</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors">Careers</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors">Flagship Atelier</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-black font-semibold mb-5 tracking-widest">Connect</h4>
+                <ul class="space-y-3.5">
+                    <li><a href="#" class="hover:text-black transition-colors">Instagram</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors">Pinterest</a></li>
+                    <li><a href="#" class="hover:text-black transition-colors">Spotify Playlists</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between text-[10px] text-gray-400">
+            <p>&copy; 2026 ATELIER. Crafted in Tunisia. All rights reserved.</p>
+            <div class="flex space-x-6 mt-4 sm:mt-0">
+                <a href="#" class="hover:text-black transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-black transition-colors">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Logic Control Engines -->
+    <script>
+        /* AUTHENTICATION WINDOW CONTROLLERS */
+        function openAuthGateway() {
+            const gateway = document.getElementById('authGateway');
+            gateway.classList.remove('hidden');
+            gateway.classList.add('flex');
+            switchAuthView('login');
+        }
+
+        function closeAuthGateway() {
+            const gateway = document.getElementById('authGateway');
+            gateway.classList.remove('flex');
+            gateway.classList.add('hidden');
+        }
+
+        function switchAuthView(targetView) {
+            const loginSection = document.getElementById('loginView');
+            const registerSection = document.getElementById('registerView');
+            if (targetView === 'register') {
+                loginSection.classList.replace('block', 'hidden');
+                registerSection.classList.replace('hidden', 'block');
+            } else {
+                registerSection.classList.replace('block', 'hidden');
+                loginSection.classList.replace('hidden', 'block');
+            }
+        }
+
+        function handleAuthSubmit(event, logicType) {
+            event.preventDefault();
+            alert(logicType === 'login' ? "Connexion réussie !" : "Votre compte Atelier a été créé.");
+            closeAuthGateway();
+        }
+
+        /* LIVE CART DRAWER CONTROLLERS */
+        function toggleCartDrawer(open) {
+            const drawer = document.getElementById('cartDrawer');
+            if (open) {
+                drawer.classList.remove('hidden');
+            } else {
+                drawer.classList.add('hidden');
+            }
+        }
+
+        /* CHECKOUT WIZARD PROCESSORS */
+        function openCheckoutWizard() {
+            toggleCartDrawer(false); // close slide panel
+            const wizard = document.getElementById('checkoutWizard');
+            wizard.classList.remove('hidden');
+            wizard.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // prevent back-page scrolling
+        }
+
+        function closeCheckoutWizard() {
+            const wizard = document.getElementById('checkoutWizard');
+            wizard.classList.remove('flex');
+            wizard.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function handlePlaceOrder(event) {
+            event.preventDefault();
+            alert("Votre commande a été passée avec succès ! Vous recevrez un SMS de confirmation sous peu.");
+            closeCheckoutWizard();
+            
+            // Wipe dummy numbers for cinematic effect
+            document.getElementById('cartCountBadge').innerText = "0";
+            document.getElementById('cartPanelCount').innerText = "0";
+            document.getElementById('cartItemsContainer').innerHTML = `
+                <div class="h-full flex flex-col items-center justify-center text-center py-20 text-gray-400">
+                    <i data-lucide="shopping-bag" class="w-8 h-8 mb-3 stroke-1"></i>
+                    <p class="text-xs uppercase tracking-widest font-medium">Votre panier est vide</p>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // Init icons on fresh frame load
+        lucide.createIcons();
+    </script>
+</body>
+</html>
